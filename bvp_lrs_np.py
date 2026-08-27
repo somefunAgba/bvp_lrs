@@ -32,10 +32,8 @@ def x4(r, m=0, e=0):
     # init.
     x = 0
     #
-    if m != 0: 
-        x = np.maximum( (m-r)/m, x)
-    if me < 1:
-        x = np.maximum( (r - me)/(1 - me), x)
+    if m != 0: x = np.maximum( (m-r)/m, x)
+    if me < 1: x = np.maximum( (r - me)/(1 - me), x)
     return x
 
 
@@ -106,6 +104,7 @@ def x8Dome(r, m1, m2, m3, e1, e2, e3, c):
                         np.maximum((r - m2e)/mb, 
                             (m2-r)/ma ), 
                     1), x)
+    #
     if m3e < 1:
         last = (h + cr - m3e)/(1 - m3e)
         x = np.where(r >= m3e, np.maximum(last, x), x)
@@ -114,10 +113,14 @@ def x8Dome(r, m1, m2, m3, e1, e2, e3, c):
 
 # Dirichlet Energy Optimal Window
 def glin(x, *, p=1):
+    '''p-th root of the linear window
+    '''
     return (1-x)**(1/p)
 
 # Regularized Dirichlet Energy Optimal Window
 def grcos(x, *, p=1):
+    '''p-th root of the raised cosine window
+    '''
     # y = [0.5*(1 + np.cos(np.pi * x))]**(1/p)
     return np.cos(0.5*np.pi*x)**(2/p)
 
