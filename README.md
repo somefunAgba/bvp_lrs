@@ -1,6 +1,8 @@
 # bvp_lrs
 
-![bvp4_plt](figures/bvp4_plt.png)
+<p align="center">
+<img src="figures/bvp_4_anim.gif" width="250"
+</p>
 
 This repository builds learning-rate schedules from boundary-value problems (BVPs). The idea is to shape a parameterized profile over the interval r in [0, 1] and then convert it into a smooth learning-rate window via a transform such as a linear or raised-cosine envelope.
 
@@ -69,6 +71,10 @@ profile = x8Dome(r, 0.05, 0.2, 0.45, 0.0, 0.05, 0.05, 0.85)
 schedule = glin(profile, p=1)
 ```
 
+<p align="center">
+<img src="figures/bvp8_plt.png" width="250"
+</p>
+
 ## Visualization
 
 Run the static or animated BVP exploration script:
@@ -76,8 +82,6 @@ Run the static or animated BVP exploration script:
 ```bash
 python bvp4lrs_anim.py
 ```
-
-![bvp4_anim](figures/bvp4_anim.gif)
 
 The animation sweeps `m` and `e` together, making the transition between shape regimes easier to inspect.
 
@@ -89,7 +93,10 @@ python bvp8lrs_anim.py
 
 The animation demonstrates the complicated shape construction capabilites of the `x8M` and `x8Dome` families.
 
-![bvp8_anim](figures/bvp8_anim.gif)
+
+<p align="center">
+<img src="figures/bvp_8_anim.gif" width="250"
+</p>
 
 ## References
 

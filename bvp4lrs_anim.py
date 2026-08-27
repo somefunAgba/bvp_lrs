@@ -426,8 +426,10 @@ m, e = 0.1, 0.1
 p=1
 
 
-def addplt(r, m, e, xprobe=0.5):
+def addplt(r, m, e):
 
+    # print(f"m={m:.2f}, e={e:.2f}")
+    
     x = x4(r, m=m, e=e)
 
     yl = glin(x, p=p)
@@ -574,9 +576,9 @@ def update(frame):
     for ax in [ax_main, ax_xbvp, ax_time]: ax.clear()
 
     # animated
-    m = (frame%30)/30
+    m = (frame%180)/180
     m = 1 - np.cos(np.pi*m)**2
-    e = (frame%960)/960
+    e = (frame%30)/30
     e = 1 - np.cos(np.pi*e)**2
 
     addplt(r, m, e)
