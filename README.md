@@ -1,7 +1,7 @@
 # bvp_lrs
 
 <p align="center">
-<img src="figures/bvp_4_anim.gif" width="250"
+<img src="figures/bvp_4_anim.gif" width="300"
 </p>
 
 This repository builds learning-rate schedules from boundary-value problems (BVPs). The code works by passing a BVP profile over the normalized training horizon in [0, 1] into a smooth variational window: linear window or its regularized version: the raised-cosine window.
