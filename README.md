@@ -59,13 +59,14 @@ reg_schedule = grcos(bvp_profile, p=1)
 
 ```python
 
-# get the current normalized step
-r_t = step / num_iterations
+# get the current normalized time-step
+r_t = (step - 1) / num_iterations
+# note: 'step - 1' converts Pytorch's optimizer class default one-based indexing to a zero-based version
 
-# apply a schedule to the step-size
+# apply a schedule to the step-size 'mu'
 lr_t = mu * glin(x4(r_t, 0.05, 0), p=2)
 
-# update the model parameter
+# update the model parameter 'p' using a stochastic gradient 'v'
 p = p - lr * v
 
 ```
