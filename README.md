@@ -4,12 +4,12 @@
 <img src="figures/bvp_4_anim.gif" width="250"
 </p>
 
-This repository builds learning-rate schedules from boundary-value problems (BVPs). The idea is to shape a parameterized profile over the interval r in [0, 1] and then convert it into a smooth learning-rate window via a transform such as a linear or raised-cosine envelope.
+This repository builds learning-rate schedules from boundary-value problems (BVPs). The code works by passing a BVP profile over the normalized training horizon in [0, 1] into a smooth variational window: linear window or its regularized version: the raised-cosine window.
 
-The core building blocks live in:
+The core building block functions live in:
 
-- `bvp_lrs_np.py` for NumPy-based implementation
-- `bvp_lrs_torch.py` for PyTorch-based implementations
+- Numpy: `bvp_lrs_np.py`
+- PyTorch: `bvp_lrs_torch.py`
 
 ## BVP families
 
