@@ -110,16 +110,23 @@ def x8Dome(r, m1, m2, m3, e1, e2, e3, c):
         x = torch.where(r >= m3e, torch.maximum(last, x), x)
     return x
 
-
 # Dirichlet Energy Optimal Window
 def glin(x, *, p=1):
     '''p-th root of the linear window
+
+    Spec: 
+        - x is a real number or a tensor in [0, 1]
+        - p is a positive real number >= 1
     '''
     return (1-x)**(1/p)
 
 # Regularized Dirichlet Energy Optimal Window
 def grcos(x, *, p=1):
-    '''p-th root of the raised cosine window
+    '''p-th root of the order-2 raised cosine window
+
+    Spec: 
+        - x is a real number or a tensor in [0, 1]
+        - p is a positive real number >= 1
     '''
     # y = [0.5*(1 + torch.cos(torch.pi * x))]**(1/p)
     return torch.cos(0.5*torch.pi*x)**(2/p)

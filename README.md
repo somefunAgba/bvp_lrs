@@ -52,7 +52,24 @@ schedule = glin(bvp_profile, p=1)
 # Regularized Dirichlet-energy minimizing window
 reg_schedule = grcos(bvp_profile, p=1)
 
+
 ```
+
+### An example inside a PyTorch Optimizer Step
+
+```python
+
+# get the current normalized step
+r_t = step / num_iterations
+
+# apply a schedule to the step-size
+lr_t = mu * glin(x4(r_t, 0.05, 0), p=2)
+
+# update the model parameter
+p = p - lr * v
+
+```
+
 
 ## 8-point BVP example
 
@@ -100,6 +117,6 @@ The animation demonstrates the complicated shape construction capabilites of the
 
 ## References
 
-Cite Preprint: https://somefunagba.github.io/assets/pdf/vantr_lrschedule.pdf
+Citable Preprint: https://somefunagba.github.io/assets/pdf/vantr_lrschedule.pdf
 
-The paper develops a tust-region framework for learning-rate schedule construction in neural-network optimizers.
+The paper develops a tust-region framework for unifying learning-rate schedule construction in neural-network optimizers.
