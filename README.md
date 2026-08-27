@@ -145,11 +145,11 @@ from bvp_lrs_np import x8M, x8Dome, grcos
 
 r = np.linspace(0.0, 1.0, 1000)
 
-profile = x8M(r, 0.0, 0.0, 0.3, 0.0, 0.0, 0.0, 0.85)
+profile = x8M(r, 0.0, 0.0, 0.24, 0.0, 0.0, 0.0, 0.74)
 schedule = glin(profile, p=1)
 
 
-profile = x8Dome(r, 0.05, 0.2, 0.45, 0.0, 0.05, 0.05, 0.85)
+profile = x8Dome(r, 0.0, 0.33, 0.70, 0.0, 0.00, 0.00, 0.95)
 schedule = glin(profile, p=1)
 ```
 
