@@ -54,7 +54,7 @@ reg_schedule = grcos(bvp_profile, p=1)
 
 ```
 
-## NumPy example
+## 8-point BVP example
 
 ```python
 import numpy as np
