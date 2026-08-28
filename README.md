@@ -195,5 +195,5 @@ The project is based on a tust-region framework for constructing learning-rate s
 
 ## Notes
 
-This repository is intentionally compact and provides an extensible set of schedule-building primitives that can be adapted to optimizer design and experimentation.
+This repository is compact and provides an extensible set of schedule-building primitives that can be adapted to optimizer design and experimentation.
 
