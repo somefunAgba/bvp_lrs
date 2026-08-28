@@ -407,12 +407,17 @@ fntscalerx = r'\fontsize{0.4}{0.5}\selectfont '
 fntscalery = r'\fontsize{0.4}{0.5}\selectfont ' 
 fntscalerl = r'\fontsize{0.3}{0.5}\selectfont ' 
 
-fig, axs = plt.subplots(3,1, figsize=((10/3)*0.03, 0.07*2), dpi=1200, tight_layout=True, gridspec_kw={'height_ratios': [1, 0.5, 0.5]})
+fig, axs = plt.subplots(1,1, figsize=((10/3)*0.03, 0.07), dpi=1200, tight_layout=True)
+ax_main = axs
+ax_xbvp = []
+ax_time = []
 
-ax = axs.ravel()
-ax_main = ax[0]
-ax_xbvp = ax[1]
-ax_time = ax[2]
+# fig, axs = plt.subplots(3,1, figsize=((10/3)*0.03, 0.07*2), dpi=1200, tight_layout=True, gridspec_kw={'height_ratios': [1, 0.5, 0.5]})
+
+# ax = axs.ravel()
+# ax_main = ax[0]
+# ax_xbvp = ax[1]
+# ax_time = ax[2]
 
 plt.subplots_adjust(hspace=0.3)
 
@@ -461,81 +466,82 @@ def addplt(r, m, e):
 
     ylbl = axlbls[0]
     xlbl = axlbls[1]
+    ax_main.set_title(axlbls[2], fontsize=fszaxlbl, pad=0.1)
 
     fmtaxes2(ax_main, handles1, xlbl, ylbl, ylims=(0,1.05), xlims=(0,1), remylims=True, lblpad=[-0.75, 0.1], lgndkw=lgndkw2)
 
     ax_main.axis('on')
 
-    # =====================================================
-    # AX-xbvp
-    # =====================================================
-    # draw horizontal line
-    ax_xbvp.plot([0, 1], [0.5, 0.5], color='k')
+    # # =====================================================
+    # # AX-xbvp
+    # # =====================================================
+    # # draw horizontal line
+    # ax_xbvp.plot([0, 1], [0.5, 0.5], color='k')
 
-    # mark selected ticks
-    ticks = [0, 0.25, 0.5, 0.75, 1]
-    for t in ticks:
-        ax_xbvp.plot([t, t], [0.48, 0.52], color='gray')
-        ax_xbvp.text(t, 0.35, fntscaler + rf"{t}", ha='center')
+    # # mark selected ticks
+    # ticks = [0, 0.25, 0.5, 0.75, 1]
+    # for t in ticks:
+    #     ax_xbvp.plot([t, t], [0.48, 0.52], color='gray')
+    #     ax_xbvp.text(t, 0.35, fntscaler + rf"{t}", ha='center')
 
-    # add xlabel
-    ax_xbvp.text(0.5, 0.1, axlbls[2], ha='center')
-    ax_xbvp.axis('off')
-    fmtaxes2(ax_xbvp, handles2, ylims=(0,1), xlims=(-0.01,1.01))
+    # # add xlabel
+    # ax_xbvp.text(0.5, 0.1, axlbls[2], ha='center')
+    # ax_xbvp.axis('off')
+    # fmtaxes2(ax_xbvp, handles2, ylims=(0,1), xlims=(-0.01,1.01))
 
-    # =====================================================
-    # TIMELINE (standalone)
-    # =====================================================
-    # draw horizontal line
-    ax_time.plot([0, 1], [0.9, 0.9], color='k')
+    # # =====================================================
+    # # TIMELINE (standalone)
+    # # =====================================================
+    # # draw horizontal line
+    # ax_time.plot([0, 1], [0.9, 0.9], color='k')
 
-    # mark selected ticks
-    ticks = [0, 0.25, 0.5, 0.75, 1]
-    for t in ticks:
-        ax_time.plot([t, t], [0.9-0.005, 0.9+0.005], color='k')
-        ax_time.text(t, 0.87, fntscaler + rf"{t}", ha='center')
+    # # mark selected ticks
+    # ticks = [0, 0.25, 0.5, 0.75, 1]
+    # for t in ticks:
+    #     ax_time.plot([t, t], [0.9-0.005, 0.9+0.005], color='k')
+    #     ax_time.text(t, 0.87, fntscaler + rf"{t}", ha='center')
 
-    # add xlabel
-    ax_time.text(0.5, 0.82, axlbls[3], ha='center')
-    ax_time.axis('off')
-    fmtaxes2(ax_time, handles3, ylims=(0.8,1), xlims=(-0.01,1.01))
+    # # add xlabel
+    # ax_time.text(0.5, 0.82, axlbls[3], ha='center')
+    # ax_time.axis('off')
+    # fmtaxes2(ax_time, handles3, ylims=(0.8,1), xlims=(-0.01,1.01))
 
 
-    # =====================================================
-    # CONNECTIONS
-    # =====================================================
-    # t = (frame % 60) / 60
-    for t in [1/N, 0.25, 0.5, 0.75, (N-1)/N]:
-        t_fold = t
-        t_hold =x4(t, m=m, e=e) 
-        t_main = t
+    # # =====================================================
+    # # CONNECTIONS
+    # # =====================================================
+    # # t = (frame % 60) / 60
+    # for t in [1/N, 0.25, 0.5, 0.75, (N-1)/N]:
+    #     t_fold = t
+    #     t_hold =x4(t, m=m, e=e) 
+    #     t_main = t
 
-        # # Timeline -> main
-        # con1 = ConnectionPatch(
-        #     xyA=(t, 0.9), coordsA=ax_time.transData,   # timeline line at y=0.5
-        #     xyB=(t_main, 0.0), coordsB=ax_main.transData,    # main x-axis
-        #     color='blue', alpha=0.2, lw=1*lw
-        # )
-        # fig.add_artist(con1)
-        # connections.append(con1)    
+    #     # # Timeline -> main
+    #     # con1 = ConnectionPatch(
+    #     #     xyA=(t, 0.9), coordsA=ax_time.transData,   # timeline line at y=0.5
+    #     #     xyB=(t_main, 0.0), coordsB=ax_main.transData,    # main x-axis
+    #     #     color='blue', alpha=0.2, lw=1*lw
+    #     # )
+    #     # fig.add_artist(con1)
+    #     # connections.append(con1)    
 
-        # Timeline -> xbvp
-        con2 = ConnectionPatch(
-            xyA=(t, 0.9), coordsA=ax_time.transData,
-            xyB=(t_hold, 0.5), coordsB=ax_xbvp.transData,
-            color='silver', alpha=0.4, lw=1*lw
-        )
-        fig.add_artist(con2)
-        connections.append(con2)
+    #     # Timeline -> xbvp
+    #     con2 = ConnectionPatch(
+    #         xyA=(t, 0.9), coordsA=ax_time.transData,
+    #         xyB=(t_hold, 0.5), coordsB=ax_xbvp.transData,
+    #         color='silver', alpha=0.4, lw=1*lw
+    #     )
+    #     fig.add_artist(con2)
+    #     connections.append(con2)
 
-        # Timeline -> q0
-        # con3 = ConnectionPatch(
-        #     xyA=(t, 0.5), coordsA=ax_time.transData,
-        #     xyB=(t_fold, 0.0), coordsB=ax_q0.transData,
-        #     color='red', alpha=0.4, lw=1
-        # )
-        # fig.add_artist(con3)
-        # connections.append(con3)
+    #     # Timeline -> q0
+    #     # con3 = ConnectionPatch(
+    #     #     xyA=(t, 0.5), coordsA=ax_time.transData,
+    #     #     xyB=(t_fold, 0.0), coordsB=ax_q0.transData,
+    #     #     color='red', alpha=0.4, lw=1
+    #     # )
+    #     # fig.add_artist(con3)
+    #     # connections.append(con3)
 
 addplt(r, m, e)
 # =====================================================
@@ -576,7 +582,7 @@ def update(frame):
     for ax in [ax_main, ax_xbvp, ax_time]: ax.clear()
 
     # animated
-    m = (frame%180)/180
+    m = (frame%360)/360
     m = 1 - np.cos(np.pi*m)**2
     e = (frame%30)/30
     e = 1 - np.cos(np.pi*e)**2

@@ -176,6 +176,10 @@ python bvp8lrs_anim.py
 
 These scripts help visualize the effect of parameter changes on profile shape and overall schedule behavior.
 
+<p align="center">
+<img src="figures/bvp4_plt.png" width="300"
+</p>
+
 The animation below demonstrates the complicated shape construction capabilites of the `x8M` and `x8Dome` families.
 
 <p align="center">
