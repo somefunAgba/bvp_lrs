@@ -200,6 +200,20 @@ for Learning-Rate Annealing</a>
 > [!NOTE]
 > A key insight from the paper is that popular learning‑rate schedules are **boundary-value constrained trust‑region trajectories** whose shapes are determined by a **first‑order total variational energy principle**.
 
+From first-principles, we can derive
+
+- [x] Linear decay 
+- [x] Square‑root linear decay
+- [x] Cosine annealing (second-order raised cosine)
+- [x] Cosine annealing (first-order raised cosine)
+
+as solutions to a 2-point BVP. Multi-point BVP generalizations lead to
+
+- [x] warmup‑decay
+- [x] warmup‑stable‑decay 
+
+as the resulting evolution of the same underlying variational principle.
+
 ## Notes
 
 This repository is compact and provides an extensible set of schedule-building primitives that can be adapted to optimizer design and experimentation.
