@@ -197,8 +197,8 @@ This code is based on a tust-region framework for constructing learning-rate sch
 <a href="https://somefunagba.github.io/assets/pdf/vantr_lrschedule.pdf" target="_blank">A Variational Trust-Region Framework
 for Learning-Rate Annealing</a>
 
-> [!KEY INSIGHT]
-> Popular learning‑rate schedules are boundary-value trust‑region trajectories whose shapes are determined by a first‑order total variational energy principle.
+> [!NOTE]
+> A key insight from the paper is that popular learning‑rate schedules are **boundary-value constrained trust‑region trajectories** whose shapes are determined by a **first‑order total variational energy principle**.
 
 ## Notes
 
