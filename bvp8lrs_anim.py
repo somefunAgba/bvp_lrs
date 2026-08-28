@@ -422,7 +422,7 @@ handles2 = []
 # Config.
 m1, m2, m3 = 0., 0., 0.3
 e1, e2, e3 = 0., 0., 0.
-c = 0.85
+c = 0.74
 
 p=1
 
@@ -458,6 +458,7 @@ def _order_projd(m1, m2, m3, e1, e2, e3, c):
 def addplt(r, m1, m2, m3, e1, e2, e3, c):
 
     args = (m1, m2, m3, e1, e2, e3, c)
+    
     m1, m2, m3, e1, e2, e3, c = _order_proj(*args)
     x = x8M(r, m1, m2, m3, e1, e2, e3, c)
     yl = glin(x, p=p)
@@ -589,10 +590,10 @@ def update(frame):
 # ---------------------------------------------------------
 # Run animation
 # ---------------------------------------------------------
-ani = FuncAnimation(fig, update, frames=360, interval=80)
+# ani = FuncAnimation(fig, update, frames=360, interval=80)
 
-# Save:
-ani.save(svdr+"/bvp_8_anim.gif", writer="pillow", dpi=9600, progress_callback=lambda i, total: print(f'Saved frame {i+1}/{total}', end='\r'))
+# # Save:
+# ani.save(svdr+"/bvp_8_anim.gif", writer="pillow", dpi=9600, progress_callback=lambda i, total: print(f'Saved frame {i+1}/{total}', end='\r'))
 
 # plt.show()
 

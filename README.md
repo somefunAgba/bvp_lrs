@@ -162,6 +162,10 @@ schedule = glin(profile, p=1)
 ```
 
 <p align="center">
+<img src="figures/bvp8_plt_1.png" width="300"
+</p>
+
+<p align="center">
 <img src="figures/bvp8_plt.png" width="300"
 </p>
 
