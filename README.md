@@ -198,21 +198,21 @@ This code is based on a tust-region framework for constructing learning-rate sch
 for Learning-Rate Annealing</a>
 
 > [!NOTE]
-> A key insight from the paper is that popular learning‑rate schedules are **boundary-value constrained trust‑region trajectories** whose shapes are determined by a **first‑order total variational energy principle**.
+> A useful way to interpret the paper is that popular learning‑rate schedules in deep learning are **boundary-value constrained trust‑region trajectories**, with shapes determined by a **first‑order total variational energy principle**.
 
-From first-principles, we can derive
+From first-principles, one can then derive
 
 - [x] Linear decay 
 - [x] Square‑root linear decay
 - [x] Cosine annealing (second-order raised cosine)
 - [x] Cosine annealing (first-order raised cosine)
 
-as solutions to a 2-point BVP. Multi-point BVP generalizations lead to
+as solutions to a 2-point BVP solutions. Extending this to multi-point BVPs yield
 
-- [x] warmup‑decay
-- [x] warmup‑stable‑decay 
+- [x] Warmup‑decay
+- [x] Warmup‑stable‑decay 
 
-as the resulting evolution of the same underlying variational principle.
+as natural consequences of the same underlying variational framework.
 
 ## Notes
 
