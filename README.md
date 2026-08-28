@@ -200,4 +200,4 @@ This code is based on a tust-region framework for constructing learning-rate sch
 ## Notes
 
 This repository is compact and provides an extensible set of schedule-building primitives that can be adapted to optimizer design and experimentation.
-
+Please, cite when used.
