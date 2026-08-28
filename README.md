@@ -141,7 +141,7 @@ p = p - lr_t * grad
 
 ```
 
-This pattern makes it straightforward to plug the schedule into optimizer steps while preserving a differentiable and parameterized design.
+This RMSProp example makes it straightforward to plug the schedule into optimizer steps while preserving a differentiable and parameterized design.
 
 
 ## Example: 8-point BVP profiles
