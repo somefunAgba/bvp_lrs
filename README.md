@@ -162,7 +162,7 @@ schedule = glin(profile, p=1)
 ```
 
 <p align="center">
-<img src="figures/bvp8_plt.png" width="250"
+<img src="figures/bvp8_plt.png" width="300"
 </p>
 
 ## Visualization
@@ -179,7 +179,7 @@ These scripts help visualize the effect of parameter changes on profile shape an
 The animation below demonstrates the complicated shape construction capabilites of the `x8M` and `x8Dome` families.
 
 <p align="center">
-<img src="figures/bvp_8_anim.gif" width="250"
+<img src="figures/bvp_8_anim.gif" width="300"
 </p>
 
 ## Related work and citation
