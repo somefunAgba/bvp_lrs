@@ -125,7 +125,6 @@ from bvp_lrs_torch import x4, glin
 r_t = (step - 1) / num_iterations
 # note: 'step - 1' converts Pytorch's optimizer class default one-based indexing to a zero-based version
 
-
 # normalize the stochastic gradient 'grad' using its second moment estimate
 smom = 0.999*smom + 0.001*(grad*grad)
 grad_smom = smom/(1 - (0.999**step))
