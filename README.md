@@ -192,7 +192,7 @@ The animation below demonstrates the complicated shape construction capabilites 
 
 ## Related work and citation
 
-The project is based on a tust-region framework for constructing learning-rate schedules using BVP-driven profiles and smooth variational windows. The underlying methodology is described in the related preprint:
+This code is based on a tust-region framework for constructing learning-rate schedules using BVP-driven profiles and smooth variational windows. The underlying methodology is described in the related preprint:
 
 - https://somefunagba.github.io/assets/pdf/vantr_lrschedule.pdf
 
