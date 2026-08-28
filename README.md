@@ -125,11 +125,19 @@ from bvp_lrs_torch import x4, glin
 r_t = (step - 1) / num_iterations
 # note: 'step - 1' converts Pytorch's optimizer class default one-based indexing to a zero-based version
 
-# apply a schedule to the step-size 'mu'
-lr_t = mu * glin(x4(r_t, 0.05, 0), p=2)
 
-# update the model parameter 'p' using a stochastic gradient 'v'
-p = p - lr * v
+# normalize the stochastic gradient 'grad' using its second moment estimate
+smom = 0.999*smom + 0.001*(grad*grad)
+grad_smom = smom/(1 - (0.999**step))
+grad_smom = torch.sqrt(smom).add(1e-10)
+
+# apply a schedule to the maximum step-size 'mu'
+mu_t = mu * glin(x4(r_t, 0.05, 0), p=2)
+lr_t = mu_t / grad_smom
+
+# update the model parameter 'p' using 
+# the learning-rate 'lr_t' and 'grad'
+p = p - lr_t * grad
 
 ```
 
