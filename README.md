@@ -122,8 +122,9 @@ import torch
 from bvp_lrs_torch import x4, glin
 
 # get the current normalized time-step
-r_t = (step - 1) / num_iterations
-# note: 'step - 1' converts Pytorch's optimizer class default one-based indexing to a zero-based version
+r_t = (step - 1) / (num_iterations - 1)
+# note: this locally converts the default one-based index start design used 
+# in Pytorch's optimizer class to a zero-based index start
 
 # normalize the stochastic gradient 'grad' using its second moment estimate
 smom = 0.999*smom + 0.001*(grad*grad)
