@@ -1,4 +1,4 @@
-# bvp_lrs 
+# bvp_lrs
 
 Boundary-value problem (BVP)-based learning-rate schedules for training neural networks.
 
@@ -143,7 +143,6 @@ p = p - lr_t * grad
 
 This RMSProp example shows how to plug the schedule into a PyTorch Optimizer class.
 
-
 ## Example: 8-point BVP profiles
 
 ```python
@@ -192,7 +191,7 @@ The animation below demonstrates the complicated shape construction capabilites 
 
 ## Related work and citation
 
-This code is based on a tust-region framework for constructing learning-rate schedules using BVP-driven profiles and smooth variational windows. The underlying methodology is described in the related preprint:
+This code is based on a trust-region framework for constructing learning-rate schedules using BVP-driven profiles and smooth variational windows. The underlying methodology is described in the related preprint:
 
 <a href="https://somefunagba.github.io/assets/pdf/vantr_lrschedule.pdf" target="_blank">A Variational Trust-Region Framework
 for Learning-Rate Annealing</a>
@@ -202,7 +201,7 @@ for Learning-Rate Annealing</a>
 
 From first-principles, one can then derive
 
-- [x] Linear decay 
+- [x] Linear decay
 - [x] Square‑root linear decay
 - [x] Cosine annealing (second-order raised cosine)
 - [x] Cosine annealing (first-order raised cosine)
@@ -210,7 +209,7 @@ From first-principles, one can then derive
 as solutions to a 2-point BVP solutions. Extending this to multi-point BVPs yield
 
 - [x] Warmup‑decay
-- [x] Warmup‑stable‑decay 
+- [x] Warmup‑stable‑decay
 
 as natural consequences of the same underlying variational framework.
 
