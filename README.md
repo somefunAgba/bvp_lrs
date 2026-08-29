@@ -191,7 +191,7 @@ The animation below demonstrates the complicated shape construction capabilites 
 
 ## Related work and citation
 
-This code is based on a trust-region framework for constructing learning-rate schedules using BVP-driven profiles and smooth variational windows. The underlying methodology is described in the related preprint:
+This code is based on a trust-region framework for constructing learning-rate schedules using smooth variational windows. The underlying methodology is described in the related preprint:
 
 <a href="https://somefunagba.github.io/assets/pdf/vantr_lrschedule.pdf" target="_blank">A Variational Trust-Region Framework
 for Learning-Rate Annealing</a>
