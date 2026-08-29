@@ -121,6 +121,8 @@ reg_schedule = grcos(bvp_profile, p=1)
 import torch
 from bvp_lrs_torch import x4, glin
 
+'''RMSProp'''
+
 # get the current normalized time-step
 r_t = (step - 1) / (num_iterations - 1)
 # note: this locally converts the default one-based index start design used 
@@ -141,7 +143,7 @@ p = p - lr_t * grad
 
 ```
 
-This RMSProp example shows how to plug the schedule into a PyTorch Optimizer class.
+This RMSProp example above shows how to plug the schedule into a PyTorch Optimizer class.
 
 ## Example: 8-point BVP profiles
 
