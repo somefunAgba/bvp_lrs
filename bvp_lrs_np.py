@@ -1,6 +1,7 @@
 import numpy as np
 
-# 2-point BVP
+''' 2-point BVP
+'''
 def x2(r): 
     '''[2-BVP]
     Specs:
@@ -8,7 +9,8 @@ def x2(r):
     '''
     return r
 
-# 3-point BVP
+''' 3-point BVP
+'''
 def x3(r, m=0):
     '''[3-BVP]
     Specs:
@@ -21,7 +23,8 @@ def x3(r, m=0):
     if m != 0: x = np.maximum( (m-r)/m, x)
     return np.maximum(x, (r - m)/(1 - m))
 
-# 4-point BVP
+''' 4-point BVP
+'''
 def x4(r, m=0, e=0):
     '''[4-BVP]
     Specs:
@@ -37,7 +40,8 @@ def x4(r, m=0, e=0):
     return x
 
 
-# 8-point BVPs
+''' 8-point BVPs
+'''
 def x8M(r, m1, m2, m3, e1, e2, e3, c):
     '''M shape [8-BVP]
     Specs:
@@ -110,7 +114,8 @@ def x8Dome(r, m1, m2, m3, e1, e2, e3, c):
         x = np.where(r >= m3e, np.maximum(last, x), x)
     return x
 
-# Dirichlet Energy Optimal Window
+''' Dirichlet Energy Optimal Window
+'''
 def glin(x, *, p=1):
     '''p-th root of the linear window
 
@@ -120,7 +125,8 @@ def glin(x, *, p=1):
     '''
     return (1-x)**(1/p)
 
-# Regularized Dirichlet Energy Optimal Window
+''' Regularized Dirichlet Energy Optimal Window
+'''
 def grcos(x, *, p=1):
     '''p-th root of the order-2 raised cosine window
 
