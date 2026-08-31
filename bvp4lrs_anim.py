@@ -456,6 +456,10 @@ def addplt(r, m, e):
     ax_main.axhline(1, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
     # ax_main.axhline(0, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
 
+    pts = np.array([0, m, m+e, 1])
+    sizes = np.array([5, 1, 1, 5])*lw
+    ax_main.scatter(pts, glin(x4(pts, m=m, e=e), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
+
     axlbls = [
     r'$\phi(t)$', 
     fr"$\begin{{array}}{{c}} r(t)\\\\[0em] {{m}}=\text{{{m:.2f}}}, {{\varepsilon}}=\text{{{e:.2f}}} \end{{array}}$",

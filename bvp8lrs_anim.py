@@ -426,7 +426,9 @@ c = 0.74
 
 p=1
 
-def _order_proj(m1, m2, m3, e1, e2, e3, c):
+bypass = False
+
+def _order_proj(m1, m2, m3, e1, e2, e3, c, bypass=False):
     """Keep the 8-point BVP parameters in a valid monotone ordering."""
     m1 = 0.33*m1
     m2 = np.clip(0.66*m2, min=m1)
@@ -438,9 +440,14 @@ def _order_proj(m1, m2, m3, e1, e2, e3, c):
 
     c = 0.7 + (1-0.7) * (1 - c)
 
+    if bypass:
+        m1, m2, m3 = 0., 0.33, 0.70
+        e1, e2, e3 = 0., 0., 0.
+        c = 0.85
+
     return m1, m2, m3, e1, e2, e3, c
 
-def _order_projd(m1, m2, m3, e1, e2, e3, c):
+def _order_projd(m1, m2, m3, e1, e2, e3, c, bypass=False):
     """Keep the 8-point BVP parameters in a valid monotone ordering."""
     m1 = 0.33*m1
     m2 = np.clip(0.66*m2, min=0.33)
@@ -452,12 +459,17 @@ def _order_projd(m1, m2, m3, e1, e2, e3, c):
 
     c = 0.7 + (1-0.7) * c
 
+    if bypass:
+        m1, m2, m3 = 0., 0.33, 0.70
+        e1, e2, e3 = 0., 0., 0.
+        c = 0.85
+
     return m1, m2, m3, e1, e2, e3, c
 
 
-def addplt(r, m1, m2, m3, e1, e2, e3, c):
+def addplt(r, m1, m2, m3, e1, e2, e3, c, bypass=False):
 
-    args = (m1, m2, m3, e1, e2, e3, c)
+    args = (m1, m2, m3, e1, e2, e3, c, bypass)
     
     m1, m2, m3, e1, e2, e3, c = _order_proj(*args)
     x = x8M(r, m1, m2, m3, e1, e2, e3, c)
@@ -478,6 +490,11 @@ def addplt(r, m1, m2, m3, e1, e2, e3, c):
 
     ax_main.axhline(1, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
     # ax_main.axhline(0, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
+
+    pts = np.array([0, m1, m1+e1, m2, m2+e2, m3, m3+e3, 1])
+    sizes = np.array([5, 1, 1, 1, 1, 1, 1, 5])*lw
+    ax_main.scatter(pts, glin(x8M(pts, m1, m2, m3, e1, e2, e3, c), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
+    ax_main.scatter(pts, grcos(x8M(pts, m1, m2, m3, e1, e2, e3, c), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
 
     axlbls = [
     r'$\phi(t)$', 
@@ -501,6 +518,8 @@ def addplt(r, m1, m2, m3, e1, e2, e3, c):
     ax_main.axvline(m1+e1, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.')
     ax_main.axvline(m2+e2, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.') 
     ax_main.axvline(m3+e3, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.')   
+
+
 
     # =====================================================
     # AX-xbvp
@@ -526,6 +545,11 @@ def addplt(r, m1, m2, m3, e1, e2, e3, c):
 
     ax_dome.axhline(1, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
 
+    pts = np.array([0, m1, m1+e1, m2, m2+e2, m3, m3+e3, 1])
+    sizes = np.array([5, 1, 1, 1, 1, 1, 1, 5])*lw
+    ax_dome.scatter(pts, glin(x8Dome(pts, m1, m2, m3, e1, e2, e3, c), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
+    ax_dome.scatter(pts, grcos(x8Dome(pts, m1, m2, m3, e1, e2, e3, c), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
+
     ylbl = axlbls[0]
     xlbl = axlbls[1]
     fmtaxes2(ax_dome, handles2, xlbl, ylbl, ylims=(0,1.05), xlims=(0,1), remylims=True, lblpad=[-0.5, 0.1], lgndkw=lgndkw2)
@@ -538,14 +562,14 @@ def addplt(r, m1, m2, m3, e1, e2, e3, c):
     ax_dome.axvline(m3+e3, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.')   
 
 
-addplt(r, m1, m2, m3, e1, e2, e3, c)
+addplt(r, m1, m2, m3, e1, e2, e3, c, bypass=bypass)
 # =====================================================
 # SAVING
 # =====================================================
 fig.tight_layout(pad=0.01)
 svdr = f"{SVDIR}"
 os.makedirs(svdr, exist_ok=True)
-fnm = f"bvp8_plt"
+fnm = f"bvp8_plt" if not bypass else f"bvp8_plt_1"
 
 # upscale from 3600 to 9600 dpi for publication quality
 fig.savefig(f"{svdr}/{fnm}.png", dpi=9600, format='png',  bbox_inches='tight', pad_inches=0.001)
@@ -585,15 +609,16 @@ def update(frame):
     e3 = evolve(frame, fps=180)
     c = evolve(frame, fps=30)
 
-    addplt(r, m1, m2, m3, e1, e2, e3, c)
+    addplt(r, m1, m2, m3, e1, e2, e3, c, bypass=bypass)
 
 # ---------------------------------------------------------
 # Run animation
 # ---------------------------------------------------------
-# ani = FuncAnimation(fig, update, frames=360, interval=80)
+if not bypass:
+    ani = FuncAnimation(fig, update, frames=360, interval=80)
 
-# # Save:
-# ani.save(svdr+"/bvp_8_anim.gif", writer="pillow", dpi=9600, progress_callback=lambda i, total: print(f'Saved frame {i+1}/{total}', end='\r'))
+    # Save:
+    ani.save(svdr+"/bvp_8_anim.gif", writer="pillow", dpi=9600, progress_callback=lambda i, total: print(f'Saved frame {i+1}/{total}', end='\r'))
 
 # plt.show()
 
