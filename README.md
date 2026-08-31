@@ -1,6 +1,6 @@
 # bvp_lrs
 
-Boundary-value problem (BVP)-based learning-rate schedules for training neural networks.
+Boundary-value problem (BVP) derived learning-rate schedules (LRS) for deep learning.
 
 `bvp_lrs` is a compact library for generating learning-rate schedules from boundary-value problem (BVP) profiles. Instead of hardcoding a single formula, you can shape the schedule using BVP families and tune parameters to express warmup, plateau or more complex multi-stage behavior in addition to decay behavior.
 
@@ -208,7 +208,7 @@ From first-principles, one can then derive
 - [x] Cosine annealing (second-order raised cosine)
 - [x] Cosine annealing (first-order raised cosine)
 
-as solutions to a 2-point BVP solutions. Extending this to multi-point BVPs yield
+as solutions to a 2-point BVP. Extending this to multi-point BVPs yield
 
 - [x] Warmup‑decay
 - [x] Warmup‑stable‑decay
