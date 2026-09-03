@@ -10,7 +10,7 @@ Boundary-value problem (BVP) derived learning-rate schedules (LRS) for deep lear
 
 ## Overview
 
-This repository provides implementation of a family of learning-rate schedules built from boundary-value problem (BVP) profiles. The schedule design follows a normalized training horizon `r in [0,1]`, where the profile captures the desired shape of the expected step-size magnitude over time, and a smooth variational window function (a linear window or its regularized version, the raised-cosine window) converts that profile into a practical learning-rate curve.
+This repository provides implementation of a family of learning-rate schedules built from boundary-value problem (BVP) profiles. The schedule design follows a normalized training horizon `r in [0,1]`, where the profile captures the desired shape of the expected step-size magnitude over time, and a smooth variational window function (a linear window or its regularized version, the raised-cosine window) converts that profile into a practical expected step-size curve for the learning-rate.
 
 The code is available in both NumPy and PyTorch, making it suitable for research, prototyping, and optimizer experiments.
 
