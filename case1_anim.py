@@ -388,7 +388,7 @@ def fmtaxes2(ax, h, xlbl=None, ylbl=None, ylims=None, xlims=None, remylims=False
 
 # ---------------------------------------------------------
 # BVPs
-from bvp_lrs_np import x8Dome, x8M, x4, x3, x2, glin, grcos
+from bvp_lrs_np import bvp_prof, case1_lin, case1_rcos
 # ---------------------------------------------------------
 
 # ---------------------------------------------------------
@@ -405,76 +405,40 @@ r = grid(N)
 fntscaler = r'\fontsize{0.3}{0.5}\selectfont '    
 fntscalerx = r'\fontsize{0.4}{0.5}\selectfont ' 
 fntscalery = r'\fontsize{0.4}{0.5}\selectfont ' 
-fntscalerl = r'\fontsize{0.25}{0.3}\selectfont ' 
+fntscalerl = r'\fontsize{0.3}{0.5}\selectfont ' 
 
-fig, axs = plt.subplots(2,1, figsize=((10/3)*0.03, 0.07*2), dpi=1200, tight_layout=True, gridspec_kw={'height_ratios': [1, 1]})
+fig, axs = plt.subplots(1,1, figsize=((10/3)*0.03, 0.07), dpi=1200, tight_layout=True)
+ax_main = axs
+ax_xbvp = []
+ax_time = []
 
-ax = axs.ravel()
-ax_main = ax[0]
-ax_dome = ax[1]
+# fig, axs = plt.subplots(3,1, figsize=((10/3)*0.03, 0.07*2), dpi=1200, tight_layout=True, gridspec_kw={'height_ratios': [1, 0.5, 0.5]})
+
+# ax = axs.ravel()
+# ax_main = ax[0]
+# ax_xbvp = ax[1]
+# ax_time = ax[2]
 
 plt.subplots_adjust(hspace=0.3)
 
 connections = [] 
 handles1 = []
 handles2 = []
+handles3 = []
 
 # Config.
-m1, m2, m3 = 0., 0., 0.3
-e1, e2, e3 = 0., 0., 0.
-c = 0.74
-
+m=0.5
 p=1
-
-bypass = False
-
-def _order_proj(m1, m2, m3, e1, e2, e3, c, bypass=False):
-    """Keep the 8-point BVP parameters in a valid monotone ordering."""
-    m1 = 0.33*m1
-    m2 = np.clip(0.66*m2, min=m1)
-    m3 = np.clip(0.8*m3, min=m2)
-
-    e1 = np.clip(0.2*e1, min=0, max=m2 - m1)
-    e2 = np.clip(0.1*e2, min=0, max=m3 - m2)
-    e3 = np.clip(0.1*e3, min=0, max=1 - m3 - 1e-3)
-
-    c = 0.7 + (1-0.7) * (1 - c)
-
-    if bypass:
-        m1, m2, m3 = 0., 0.33, 0.70
-        e1, e2, e3 = 0., 0., 0.
-        c = 0.85
-
-    return m1, m2, m3, e1, e2, e3, c
-
-def _order_projd(m1, m2, m3, e1, e2, e3, c, bypass=False):
-    """Keep the 8-point BVP parameters in a valid monotone ordering."""
-    m1 = 0.33*m1
-    m2 = np.clip(0.66*m2, min=0.33)
-    m3 = np.clip(0.8*m3, min=0.7)
-
-    e1 = np.clip(0.2*e1, min=0, max=m2 - m1)
-    e2 = np.clip(0.1*e2, min=0, max=m3 - m2)
-    e3 = np.clip(0.1*e3, min=0, max=1 - m3 - 1e-3)
-
-    c = 0.7 + (1-0.7) * c
-
-    if bypass:
-        m1, m2, m3 = 0., 0.33, 0.70
-        e1, e2, e3 = 0., 0., 0.
-        c = 0.85
-
-    return m1, m2, m3, e1, e2, e3, c
+e=0.2
 
 
-def addplt(r, m1, m2, m3, e1, e2, e3, c, bypass=False):
+def addplt_case1(r, m, e):
 
-    args = (m1, m2, m3, e1, e2, e3, c, bypass)
     
-    m1, m2, m3, e1, e2, e3, c = _order_proj(*args)
-    x = x8M(r, m1, m2, m3, e1, e2, e3, c)
-    yl = glin(x, p=p)
-    yr = grcos(x, p=p)
+    x = bvp_prof(r, m=m, e=e)
+    yl = case1_lin(x, p)
+    yr = case1_rcos(x, p)
+
 
     # =====================================================
     # TOP: FINAL SCHEDULE
@@ -491,15 +455,14 @@ def addplt(r, m1, m2, m3, e1, e2, e3, c, bypass=False):
     ax_main.axhline(1, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
     # ax_main.axhline(0, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
 
-    pts = np.array([0, m1, m1+e1, m2, m2+e2, m3, m3+e3, 1])
-    sizes = np.array([5, 1, 1, 1, 1, 1, 1, 5])*lw
-    ax_main.scatter(pts, glin(x8M(pts, m1, m2, m3, e1, e2, e3, c), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
-    ax_main.scatter(pts, grcos(x8M(pts, m1, m2, m3, e1, e2, e3, c), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
+    pts = np.array([0, m, m+e, 1])
+    sizes = np.array([5, 1, 1, 5])*lw
+    ax_main.scatter(pts, case1_lin(bvp_prof(pts, m=m, e=e), p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
 
     axlbls = [
     r'$\phi(t)$', 
-    fr"$\begin{{array}}{{l}} \qquad \qquad \qquad r(t) \, \\\\[0em] {{m}}_1=\text{{{m1:.2f}}}, \,{{\varepsilon}}_1=\text{{{e1:.2f}}} \,\\\\[0em] {{m}}_2=\text{{{m2:.2f}}}, \,{{\varepsilon}}_2=\text{{{e2:.2f}}} \,\\\\[0em] {{m}}_3=\text{{{m3:.2f}}}, \, {{\varepsilon}}_3=\text{{{e3:.2f}}}, \, c=\text{{{c:.2f}}} \end{{array}}$",
-    fr"$\begin{{array}}{{c}} \text{{8-point BVPs }}\end{{array}}$",
+    fr"$\begin{{array}}{{c}} r(t)\\\\[0em] {{m}}=\text{{{m:.2f}}}, {{\varepsilon}}=\text{{{e:.2f}}}\end{{array}}$",
+    fr"$\begin{{array}}{{c}} \text{{Case I: 2-point BVP }}\end{{array}}$",
     r'Normalized horizon, $r(t)$'
     ]
     axlbls[:] = [fntscalerl + " " + lbl for lbl in axlbls]
@@ -508,73 +471,29 @@ def addplt(r, m1, m2, m3, e1, e2, e3, c, bypass=False):
     xlbl = axlbls[1]
     ax_main.set_title(axlbls[2], fontsize=fszaxlbl, pad=0.1)
 
-    fmtaxes2(ax_main, handles1, xlbl, ylbl, ylims=(0,1.05), xlims=(0,1), remylims=True, lblpad=[-0.5, 0.1], lgndkw=lgndkw2)
+    fmtaxes2(ax_main, handles1, xlbl, ylbl, ylims=(0,1.05), xlims=(0,1), remylims=True, lblpad=[-0.7, 0.1], lgndkw=lgndkw2)
 
     ax_main.axis('on')
 
-    ax_main.axvline(m1, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
-    ax_main.axvline(m2, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
-    ax_main.axvline(m3, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')   
-    ax_main.axvline(m1+e1, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.')
-    ax_main.axvline(m2+e2, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.') 
-    ax_main.axvline(m3+e3, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.')   
+    return f"bvp_case1_plt"
 
 
+# RUN
 
-    # =====================================================
-    # AX-xbvp
-    # =====================================================
+fnm = addplt_case1(r, m, e)
 
-    m1, m2, m3, e1, e2, e3, c = _order_projd(*args)
-    xd = x8Dome(r, m1, m2, m3, e1, e2, e3, c)
-    yld = glin(xd, p=p)
-    yrd = grcos(xd, p=p)    
-
-    axlbls = [
-    r'$\phi(t)$', 
-    fr"$\begin{{array}}{{l}} \qquad \qquad \qquad r(t) \, \\\\[0em] {{m}}_1=\text{{{m1:.2f}}}, \,{{\varepsilon}}_1=\text{{{e1:.2f}}} \,\\\\[0em] {{m}}_2=\text{{{m2:.2f}}}, \,{{\varepsilon}}_2=\text{{{e2:.2f}}} \,\\\\[0em] {{m}}_3=\text{{{m3:.2f}}}, \, {{\varepsilon}}_3=\text{{{e3:.2f}}}, \, c=\text{{{c:.2f}}} \end{{array}}$",
-    fr"$\begin{{array}}{{c}} \text{{8-point BVP, }} {{x}}_8\bigl(r(t);m,\varepsilon\bigr)\end{{array}}$",
-    r'Normalized horizon, $r(t)$'
-    ]
-    axlbls[:] = [fntscalerl + " " + lbl for lbl in axlbls]
-
-    h, = ax_dome.plot(r, yld, color='red', lw=1*lw, label=lnlbls[0])
-    handles2.append(h)
-    h, = ax_dome.plot(r, yrd, color='blue', lw=1*lw, label=lnlbls[1])
-    handles2.append(h)
-
-    ax_dome.axhline(1, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
-
-    pts = np.array([0, m1, m1+e1, m2, m2+e2, m3, m3+e3, 1])
-    sizes = np.array([5, 1, 1, 1, 1, 1, 1, 5])*lw
-    ax_dome.scatter(pts, glin(x8Dome(pts, m1, m2, m3, e1, e2, e3, c), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
-    ax_dome.scatter(pts, grcos(x8Dome(pts, m1, m2, m3, e1, e2, e3, c), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
-
-    ylbl = axlbls[0]
-    xlbl = axlbls[1]
-    fmtaxes2(ax_dome, handles2, xlbl, ylbl, ylims=(0,1.05), xlims=(0,1), remylims=True, lblpad=[-0.5, 0.1], lgndkw=lgndkw2)
-
-    ax_dome.axvline(m1, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
-    ax_dome.axvline(m2, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
-    ax_dome.axvline(m3, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
-    ax_dome.axvline(m1+e1, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.')
-    ax_dome.axvline(m2+e2, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.')  
-    ax_dome.axvline(m3+e3, c='k', alpha=0.5, zorder=4, lw=lw, ls='-.')   
-
-
-addplt(r, m1, m2, m3, e1, e2, e3, c, bypass=bypass)
 # =====================================================
 # SAVING
 # =====================================================
 fig.tight_layout(pad=0.01)
 svdr = f"{SVDIR}"
 os.makedirs(svdr, exist_ok=True)
-fnm = f"bvp8_plt" if not bypass else f"bvp8_plt_1"
 
 # upscale from 3600 to 9600 dpi for publication quality
 fig.savefig(f"{svdr}/{fnm}.png", dpi=9600, format='png',  bbox_inches='tight', pad_inches=0.001)
 plt.close(fig)
 # plt.show()
+
 
 # ---------------------------------------------------------
 # Animation update
@@ -588,37 +507,34 @@ def update(frame):
     # CLEAR OLD CONNECTIONS and AXES
     # -------------------------------------------------
     
+    for con in connections: con.remove()
+    connections.clear()
     for hnd in handles1: hnd.remove()
     handles1.clear()
     for hnd in handles2: hnd.remove()
     handles2.clear()    
+    for hnd in handles3: hnd.remove()
+    handles3.clear()
 
-
-    for ax in [ax_main, ax_dome]: ax.clear()
+    for ax in [ax_main, ax_xbvp, ax_time]: ax.clear()
 
     # animated
-    def evolve(frame, fps=30):
-        x = (frame%fps)/fps
-        return 1 - np.cos(np.pi*x)**2
+    m = (frame%360)/360
+    m = (1 - np.cos(np.pi*m)**2)
 
-    m1 = evolve(frame, fps=960)
-    m2 = evolve(frame, fps=720)
-    m3 = evolve(frame, fps=180)
-    e1 = evolve(frame, fps=720)
-    e2 = evolve(frame, fps=360)
-    e3 = evolve(frame, fps=180)
-    c = evolve(frame, fps=30)
+    e = (frame%60)/60
+    e = 0.25*(1-np.cos(np.pi*e)**2)
 
-    addplt(r, m1, m2, m3, e1, e2, e3, c, bypass=bypass)
+    addplt_case1(r, m, e)
+
+
 
 # ---------------------------------------------------------
 # Run animation
 # ---------------------------------------------------------
-if not bypass:
-    ani = FuncAnimation(fig, update, frames=360, interval=80)
+ani = FuncAnimation(fig, update, frames=360, interval=80)
 
-    # Save:
-    ani.save(svdr+"/bvp_8_anim.gif", writer="pillow", dpi=9600, progress_callback=lambda i, total: print(f'Saved frame {i+1}/{total}', end='\r'))
+# Save:
+ani.save(svdr+f"/{fnm}.gif", writer="pillow", dpi=9600, progress_callback=lambda i, total: print(f'Saved frame {i+1}/{total}', end='\r'))
 
 # plt.show()
-

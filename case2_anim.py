@@ -2,6 +2,8 @@
 import sys, os
 from pathlib import Path
 
+
+
 # before going to the project root
 SVDIR = os.getcwd() + "/figures"
 # print(SVDIR)
@@ -388,7 +390,7 @@ def fmtaxes2(ax, h, xlbl=None, ylbl=None, ylims=None, xlims=None, remylims=False
 
 # ---------------------------------------------------------
 # BVPs
-from bvp_lrs_np import x8Dome, x8M, x4, x3, x2, glin, grcos
+from bvp_lrs_np import bvp_prof, case2_lin, case2_rcos
 # ---------------------------------------------------------
 
 # ---------------------------------------------------------
@@ -427,18 +429,17 @@ handles2 = []
 handles3 = []
 
 # Config.
-m, e = 0.1, 0.1
+m=0.5
 p=1
+e=0.2
 
 
-def addplt(r, m, e):
+def addplt_case2(r, m, e):
 
-    # print(f"m={m:.2f}, e={e:.2f}")
-    
-    x = x4(r, m=m, e=e)
 
-    yl = glin(x, p=p)
-    yr = grcos(x, p=p)
+    x = bvp_prof(r, m=m, e=e)
+    yl = case2_lin(x, p)
+    yr = case2_rcos(x, p)
 
 
     # =====================================================
@@ -456,14 +457,14 @@ def addplt(r, m, e):
     ax_main.axhline(1, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
     # ax_main.axhline(0, c='silver', alpha=0.5, zorder=4, lw=lw, ls='-.')
 
-    pts = np.array([0, m, m+e, 1])
-    sizes = np.array([5, 1, 1, 5])*lw
-    ax_main.scatter(pts, glin(x4(pts, m=m, e=e), p=p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
+    pts = np.array([0, 0.5*m, m, m+e, 0.5*(1+(m+e)), 1])
+    sizes = np.array([5, 1, 1, 1, 1, 5])*lw
+    ax_main.scatter(pts, case2_lin(bvp_prof(pts, m=m, e=e), p), color='k', alpha=0.5, zorder=5, lw=0.5*lw, s=sizes, marker='.')
 
     axlbls = [
     r'$\phi(t)$', 
-    fr"$\begin{{array}}{{c}} r(t)\\\\[0em] {{m}}=\text{{{m:.2f}}}, {{\varepsilon}}=\text{{{e:.2f}}} \end{{array}}$",
-    fr"$\begin{{array}}{{c}} \text{{4-point BVP, }} {{x}}_4\bigl(r(t);m,\varepsilon\bigr)\end{{array}}$",
+    fr"$\begin{{array}}{{c}} r(t)\\\\[0em] {{m}}=\text{{{m:.2f}}}, {{\varepsilon}}=\text{{{e:.2f}}}\end{{array}}$",
+    fr"$\begin{{array}}{{c}} \text{{Case II: 3-point BVP }}\end{{array}}$",
     r'Normalized horizon, $r(t)$'
     ]
     axlbls[:] = [fntscalerl + " " + lbl for lbl in axlbls]
@@ -472,89 +473,23 @@ def addplt(r, m, e):
     xlbl = axlbls[1]
     ax_main.set_title(axlbls[2], fontsize=fszaxlbl, pad=0.1)
 
-    fmtaxes2(ax_main, handles1, xlbl, ylbl, ylims=(0,1.05), xlims=(0,1), remylims=True, lblpad=[-0.75, 0.1], lgndkw=lgndkw2)
+    fmtaxes2(ax_main, handles1, xlbl, ylbl, ylims=(0,1.2), xlims=(0,1), remylims=True, lblpad=[-0.75, 0.1], lgndkw=lgndkw2)
 
     ax_main.axis('on')
 
-    # # =====================================================
-    # # AX-xbvp
-    # # =====================================================
-    # # draw horizontal line
-    # ax_xbvp.plot([0, 1], [0.5, 0.5], color='k')
-
-    # # mark selected ticks
-    # ticks = [0, 0.25, 0.5, 0.75, 1]
-    # for t in ticks:
-    #     ax_xbvp.plot([t, t], [0.48, 0.52], color='gray')
-    #     ax_xbvp.text(t, 0.35, fntscaler + rf"{t}", ha='center')
-
-    # # add xlabel
-    # ax_xbvp.text(0.5, 0.1, axlbls[2], ha='center')
-    # ax_xbvp.axis('off')
-    # fmtaxes2(ax_xbvp, handles2, ylims=(0,1), xlims=(-0.01,1.01))
-
-    # # =====================================================
-    # # TIMELINE (standalone)
-    # # =====================================================
-    # # draw horizontal line
-    # ax_time.plot([0, 1], [0.9, 0.9], color='k')
-
-    # # mark selected ticks
-    # ticks = [0, 0.25, 0.5, 0.75, 1]
-    # for t in ticks:
-    #     ax_time.plot([t, t], [0.9-0.005, 0.9+0.005], color='k')
-    #     ax_time.text(t, 0.87, fntscaler + rf"{t}", ha='center')
-
-    # # add xlabel
-    # ax_time.text(0.5, 0.82, axlbls[3], ha='center')
-    # ax_time.axis('off')
-    # fmtaxes2(ax_time, handles3, ylims=(0.8,1), xlims=(-0.01,1.01))
+    return f"bvp_case2_plt"
 
 
-    # # =====================================================
-    # # CONNECTIONS
-    # # =====================================================
-    # # t = (frame % 60) / 60
-    # for t in [1/N, 0.25, 0.5, 0.75, (N-1)/N]:
-    #     t_fold = t
-    #     t_hold =x4(t, m=m, e=e) 
-    #     t_main = t
+# RUN
 
-    #     # # Timeline -> main
-    #     # con1 = ConnectionPatch(
-    #     #     xyA=(t, 0.9), coordsA=ax_time.transData,   # timeline line at y=0.5
-    #     #     xyB=(t_main, 0.0), coordsB=ax_main.transData,    # main x-axis
-    #     #     color='blue', alpha=0.2, lw=1*lw
-    #     # )
-    #     # fig.add_artist(con1)
-    #     # connections.append(con1)    
+fnm = addplt_case2(r, m, e)
 
-    #     # Timeline -> xbvp
-    #     con2 = ConnectionPatch(
-    #         xyA=(t, 0.9), coordsA=ax_time.transData,
-    #         xyB=(t_hold, 0.5), coordsB=ax_xbvp.transData,
-    #         color='silver', alpha=0.4, lw=1*lw
-    #     )
-    #     fig.add_artist(con2)
-    #     connections.append(con2)
-
-    #     # Timeline -> q0
-    #     # con3 = ConnectionPatch(
-    #     #     xyA=(t, 0.5), coordsA=ax_time.transData,
-    #     #     xyB=(t_fold, 0.0), coordsB=ax_q0.transData,
-    #     #     color='red', alpha=0.4, lw=1
-    #     # )
-    #     # fig.add_artist(con3)
-    #     # connections.append(con3)
-
-addplt(r, m, e)
 # =====================================================
 # SAVING
 # =====================================================
 fig.tight_layout(pad=0.01)
 svdr = f"{SVDIR}"
 os.makedirs(svdr, exist_ok=True)
-fnm = f"bvp4_plt"
 
 # upscale from 3600 to 9600 dpi for publication quality
 fig.savefig(f"{svdr}/{fnm}.png", dpi=9600, format='png',  bbox_inches='tight', pad_inches=0.001)
@@ -587,11 +522,12 @@ def update(frame):
 
     # animated
     m = (frame%360)/360
-    m = 1 - np.cos(np.pi*m)**2
-    e = (frame%30)/30
-    e = 1 - np.cos(np.pi*e)**2
+    m = (1 - np.cos(np.pi*m)**2)
 
-    addplt(r, m, e)
+    e = (frame%60)/60
+    e = 0.25*(1-np.cos(np.pi*e)**2)
+
+    addplt_case2(r, m, e)
 
 
 
@@ -601,6 +537,6 @@ def update(frame):
 ani = FuncAnimation(fig, update, frames=360, interval=80)
 
 # Save:
-ani.save(svdr+"/bvp_4_anim.gif", writer="pillow", dpi=9600, progress_callback=lambda i, total: print(f'Saved frame {i+1}/{total}', end='\r'))
+ani.save(svdr+f"/{fnm}.gif", writer="pillow", dpi=9600, progress_callback=lambda i, total: print(f'Saved frame {i+1}/{total}', end='\r'))
 
 # plt.show()

@@ -1,141 +1,75 @@
 import torch
 
-''' 2-point BVP
-'''
-def x2(r): 
-    '''[2-BVP]
-    Specs:
-    - 0 <= r <= 1
-    '''
-    return r
+def bvp_prof(r, *, m=0, e=0):
+    '''Normalized BVP Profile: 
 
-''' 3-point BVP
-'''
-def x3(r, m=0):
-    '''[3-BVP]
-    Specs:
-    - 0 <= r <= 1
-    - 0 <= m < 1
-    '''
-    # init.
-    x = 0
-    #
-    if m != 0: x = torch.maximum( (m-r)/m, x)
-    return torch.maximum(x, (r - m)/(1 - m))
+    Input Specs:
+    - Required: 0 <= r <= 1
+    - Optional: 0 <= m, e <= 1
 
+    Use as `x = bvp_prof(r; m, e)`
 
-''' 4-point BVP
-'''
-def x4(r, m=0, e=0):
-    '''[4-BVP]
-    Specs:
-    - 0 <= r <= 1
-    - 0 <= m <= m + e < 1
+    Output Specs:
+    - 0 <= x <= 1
+    
+    CASE 1: explicit [2-point BVP] to [4-point BVP]
+    - 0 <= m <= m+e <= 1
+
+    CASE 2: explicit [3-point BVP] to [6-point BVP]
+    - 0 <= m/2 <= m <= m+e <= (1+me)/2 <= 1
     '''
     me = m + e
-    # init.
-    x = 0
-    #
-    if m != 0: x = torch.maximum( (m-r)/m, x)
-    if me < 1: x = torch.maximum((r - me)/(1 - me), x)
-    return x
+    left, right = torch.inf, 0
+    y = 1
+    if m > 0:
+        left = r/m
+        y = torch.minimum(left, y)
+    if me < 1:
+        right = (1-r)/(1-me)
+        y = torch.minimum(y, right)
+
+    return 1 - y
 
 
-''' 8-point BVPs
-'''
-def x8M(r, m1, m2, m3, e1, e2, e3, c):
-    '''M shape [8-BVP]
+def case1_lin(x, p:float=1):
+    '''CASE 1: [2-point BVP]
+    Dirichlet Energy Optimal Window
+
     Specs:
-    - 0 <= r <= 1
-    - 0 <= m1 <= m1 + e1 <= m2 <= m2 + e2 <= m3 <= m3 + e3 < 1
-    '''
-    m1e = m1 + e1
-    m2e = m2 + e2
-    m3e = m3 + e3
-    ma = m2 - m1e
-    mb = m3 - m2e
-    h = 1-c
-
-    # init.
-    x = 0
-    #
-    if m1 != 0: x = torch.maximum( (m1-r)/m1, x)
-    #
-    if ma <= 0 and mb > 0:
-        x = torch.maximum( 
-            h * torch.minimum( (m3 -r)/mb, 1),  
-            x )
-    elif ma > 0 and mb <= 0:
-        x = torch.maximum(
-                h * torch.minimum( 1, 
-                    (r - m1e)/ma 
-                ), x )           
-    elif ma > 0 and mb > 0:
-        x = torch.maximum(
-                h * torch.minimum( 
-                    torch.minimum( (m3 -r)/mb, 1), 
-                    (r - m1e)/ma
-                ), x )   
-    #      
-    if m3e < 1:
-        x = torch.maximum((r - m3e)/(1 - m3e), x)
-    return x
-
-def x8Dome(r, m1, m2, m3, e1, e2, e3, c):
-    '''Dome shape [8-BVP]
-    Specs:
-    - 0 <= r <= 1
-    - 0 <= m1 <= m1 + e1 <= m2 <= m2 + e2 <= m3 <= m3 + e3 < 1    
-    '''
-    m1e = m1 + e1
-    m2e = m2 + e2
-    m3e = m3 + e3
-    ma = m2 - m1e
-    mb = m3 - m2e
-    h, cr = 1-c, c*r
-
-    # init.
-    x = 0
-    #
-    if m1 != 0: x = torch.maximum( (m1-cr)/m1, x)
-    #
-    if ma <= 0 and mb > 0:
-        x = torch.maximum( h * torch.minimum((r - m2e)/mb, 1), x)
-    if ma > 0 and mb <= 0:
-        x = torch.maximum( h * torch.minimum( (m2-r)/ma, 1), x)
-    elif ma > 0 and mb > 0:
-        x = torch.maximum( 
-                h * torch.minimum(
-                        torch.maximum((r - m2e)/mb, 
-                            (m2-r)/ma ), 
-                    1), x)
-    #
-    if m3e < 1:
-        last = (h + cr - m3e)/(1 - m3e)
-        x = torch.where(r >= m3e, torch.maximum(last, x), x)
-    return x
-
-''' Dirichlet Energy Optimal Window
-'''
-def glin(x, *, p=1):
-    '''p-th root of the linear window
-
-    Spec: 
-        - x is a real number or a tensor in [0, 1]
-        - p is a positive real number >= 1
+    - 0 <= x <= 1
+    - Optional: p >= 1
     '''
     return (1-x)**(1/p)
 
-''' Regularized Dirichlet Energy Optimal Window
-'''
-def grcos(x, *, p=1):
-    '''p-th root of the order-2 raised cosine window
+def case1_rcos(x, p:float=1):
+    '''CASE 1: [2-point BVP]
+    Tikhonov-regularized Dirichlet Energy Optimal Window
 
-    Spec: 
-        - x is a real number or a tensor in [0, 1]
-        - p is a positive real number >= 1
+    Specs:
+    - 0 <= x <= 1
+    - Optional: p >= 1      
     '''
-    # y = [0.5*(1 + torch.cos(torch.pi * x))]**(1/p)
+    # [0.5*(1 + torch.cos(torch.pi * x))]**(1/p)
     return torch.cos(0.5*torch.pi*x)**(2/p)
 
+def case2_lin(x, p:float=1):
+    '''CASE 2: [3-point BVP]
+    Dirichlet Energy Optimal Window
+
+    Specs:
+    - 0 <= x <= 1
+    - Optional: p >= 1
+    '''
+    return (1 + x - 2*x*x)**(1/p)
+
+def case2_rcos(x, p:float=1):
+    '''CASE 2: [3-point BVP]
+    Tikhonov-regularized Dirichlet Energy Optimal Window
+
+    Specs:
+    - 0 <= x <= 1
+    - Optional: p >= 1      
+    '''
+    hcx = 0.5*torch.cos(torch.pi*x)
+    return (1 + hcx - 2*hcx*hcx)**(1/p)
 
