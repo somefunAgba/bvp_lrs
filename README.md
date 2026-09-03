@@ -39,7 +39,7 @@ These windows are the smoothest over the normalized domain with respect to the f
 Case 2:
 
 - p-th root quadratic polynomial window: `case1_lin(x, p=1) = (1 + x - 2 x^2)^(1/p)
-- p-th root sum of raised cosine window: `case2_rcos(x, p=1) = (1 + 0.5*cos(pi * x) - 0.5 * cos(pi * x)^2)^(2/p)`
+- p-th root sum of raised cosine window: `case2_rcos(x, p=1) = (1 + 0.5*cos(pi * x) - 0.5 * cos(pi * x)^2)^(1/p)`
 
 These windows additionally maximize the total expected step-size magnitude while remaining smooth over the normalized domain with respect to the first-order total variational energy functional of the expected step-size magnitude.
 
