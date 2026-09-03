@@ -1,6 +1,5 @@
 import numpy as np
 
-
 def bvp_prof(r, *, m=0, e=0):
     '''Normalized BVP Profile: 
 
@@ -30,6 +29,17 @@ def bvp_prof(r, *, m=0, e=0):
         y = np.minimum(y, right)
 
     return 1 - y
+
+
+def endpt(y, l=0):
+    ''''Terminal value of the BVP
+
+    Apply to enforce a terminal boundary condition `l` on the input `y, where
+    - 0 <= l < 1
+    , where
+    - 0 <= y <= 1
+    '''
+    return l + (1-l)*y
 
 
 def case1_lin(x, p:float=1):
