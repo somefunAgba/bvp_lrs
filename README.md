@@ -248,12 +248,12 @@ class BVP_LRS:
 
 ```
 
-### Usage Example
+### Usage Examples
 
 ```python
 optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
 
-# 10% warmup, square-root linear decay to zero over 50 million iterations
+# 10% warmup, 0% hold, square-root linear decay to zero over 50 million iterations
 scheduler = BVP_LRS(
     optimizer,
     num_iterations=50000000,
@@ -273,9 +273,77 @@ for batch in loader:
 
 ```
 
-These examples above show several ways to plug the schedule to use with any PyTorch Optimizer class.
+```python
+optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
 
+# 0% warmup, 20% hold, cosine annealing to 10% of initial step-size over 50 million iterations
+scheduler = BVP_LRS(
+    optimizer,
+    window='case1_rcos',
+    num_iterations=50000000,
+    hold=0.2,
+    decayto=0.1
+)
 
+for batch in loader:
+    loss = model(batch)
+    loss.backward()
+
+    # step
+    scheduler.step() # BVP schedule update
+    optimizer.step() # Optimizer logic
+
+    optimizer.zero_grad()
+
+```
+
+```python
+optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
+
+# 0% warmup, 0% hold, sum of raised-cosines decay to zero over 50 million iterations
+scheduler = BVP_LRS(
+    optimizer,
+    window='case2_rcos',
+    num_iterations=50000000,
+)
+
+for batch in loader:
+    loss = model(batch)
+    loss.backward()
+
+    # step
+    scheduler.step() # BVP schedule update
+    optimizer.step() # Optimizer logic
+
+    optimizer.zero_grad()
+
+```
+
+```python
+optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
+
+# 5% warmup, quad. polynomial decay to zero over 50 million iterations
+scheduler = BVP_LRS(
+    optimizer,
+    window='case2_lin',
+    num_iterations=50000000,
+    warmup=0.05,
+
+)
+
+for batch in loader:
+    loss = model(batch)
+    loss.backward()
+
+    # step
+    scheduler.step() # BVP schedule update
+    optimizer.step() # Optimizer logic
+
+    optimizer.zero_grad()
+
+```
+
+These examples above show several ways to integrate this library with any PyTorch Optimizer class.
 
 ## Visualization
 
