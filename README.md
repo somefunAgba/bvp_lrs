@@ -384,7 +384,7 @@ This code is based on a trust-region framework for constructing learning-rate sc
 for Learning-Rate Annealing</a>
 
 > [!NOTE]
-> The paper shows that popular, widely-used learning‑rate schedules in deep learning arise as **boundary-value constrained trust‑region trajectories** of the expected step-size magnitude, with shapes determined by a **total first‑order variational energy principle**.
+> The paper shows that popular, widely-used learning‑rate schedules in deep learning arise as **boundary-value constrained trust‑region trajectories** of the expected step-size magnitude, with shapes determined by a **total first‑order variational energy minimization principle**.
 
 From first-principles, one can then derive
 
