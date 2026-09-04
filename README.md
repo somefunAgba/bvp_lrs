@@ -30,7 +30,7 @@ The code is available in both NumPy and PyTorch, making it suitable for research
 
 Assume you have defined
 
-- `mu` as your initial step-size guess or estimate, and
+- `mu` as your initial maximum step-size guess or estimate, and
 - `r in [0,1]` as the normalized iteration index over a finite training horizon.
 
 ### BVP profile
