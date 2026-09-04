@@ -232,17 +232,16 @@ class BVP_LRS:
         warmup: float = 0,
         hold: float = 0,
         decayto: float = 0,
-        p: int = 1,
+        root: int = 1,
     ):
         self.optimizer = optimizer
+        self.scf = getattr(lrs, window)
         self.tau = num_iterations - 1
         self.m = warmup
         self.e = hold
         self.l = decayto
-        self.scf = getattr(lrs, window)
-        self.p = p
+        self.p = root
         self.t = 0
-
 
         for group in self.optimizer.param_groups:
             group.setdefault("mu", group["lr"])
