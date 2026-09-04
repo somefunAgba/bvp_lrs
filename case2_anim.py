@@ -445,7 +445,7 @@ def addplt_case2(r, m, e):
     # =====================================================
     # TOP: FINAL SCHEDULE
     # =====================================================
-    lnlbls = ["normal shape", "regularized shape"]
+    lnlbls = ["canonical shape", "regularized shape"]
     lnlbls[:] = [fntscalerl + " " + lbl for lbl in lnlbls]
 
 
