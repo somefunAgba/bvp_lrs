@@ -185,7 +185,7 @@ def step(self):
         schedule = lrs.case1_lin(prof, p=group["root"])
 
         # Scheduled step-size
-        mu_t = group["mu"] * lrs.endpt(schedule, l=group['end'])
+        mu_t = group["mu"] * lrs.endpt(schedule, l=group['decayto'])
 
         for p in group["params"]:
             if p.grad is None:
