@@ -260,9 +260,10 @@ class BVP_LRS:
 ```python
 optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
 
+# 10% warmup, square-root linear decay to zero over 50 million iterations
 scheduler = BVP_LRS(
     optimizer,
-    num_iterations=5000000,
+    num_iterations=50000000,
     warmup=0.1,
     p=2,
 )
