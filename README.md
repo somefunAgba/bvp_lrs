@@ -275,14 +275,14 @@ scheduler = BVP_LRS(
 )
 
 for batch in loader:
+    optimizer.zero_grad()
+    
     loss = model(batch)
     loss.backward()
 
     # step
     scheduler.step() # BVP schedule update
     optimizer.step() # Optimizer logic
-
-    optimizer.zero_grad()
 
 ```
 
@@ -299,14 +299,14 @@ scheduler = BVP_LRS(
 )
 
 for batch in loader:
+    optimizer.zero_grad()
+    
     loss = model(batch)
     loss.backward()
 
     # step
     scheduler.step() # BVP schedule update
     optimizer.step() # Optimizer logic
-
-    optimizer.zero_grad()
 
 ```
 
@@ -321,14 +321,14 @@ scheduler = BVP_LRS(
 )
 
 for batch in loader:
+    optimizer.zero_grad()
+    
     loss = model(batch)
     loss.backward()
 
     # step
     scheduler.step() # BVP schedule update
     optimizer.step() # Optimizer logic
-
-    optimizer.zero_grad()
 
 ```
 
@@ -345,14 +345,14 @@ scheduler = BVP_LRS(
 )
 
 for batch in loader:
+    optimizer.zero_grad()
+
     loss = model(batch)
     loss.backward()
 
     # step
     scheduler.step() # BVP schedule update
     optimizer.step() # Optimizer logic
-
-    optimizer.zero_grad()
 
 ```
 
