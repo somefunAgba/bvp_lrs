@@ -427,9 +427,9 @@ handles2 = []
 handles3 = []
 
 # Config.
-m=0.5
+m=0
 p=1
-e=0.2
+e=0
 
 
 def addplt_case1(r, m, e):

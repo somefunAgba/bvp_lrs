@@ -61,7 +61,7 @@ Two cases are provided based on variational energy minimization.
 *Goal*: Minimize the total first-order variational energy functional of the expected step-size magnitude subject to at least, boundary value constraints `y(0)=1, y(1)=0`.
 
 <p align="center">
-<img src="figures/bvp_case1_plt.gif" width="300"
+<img src="figures/bvp_case1_plt.png" width="300"
 </p>
 
 #### p-th root Linear window
@@ -89,7 +89,6 @@ schedule = endpt(case1_rcos(bvp_prof(r)))
 ```
 
 This is the regularized version derived by minimizing a Tikhonov regularized total first-order variational energy functional of the expected step-size magnitude.
-
 
 *Remarks*: These windows are the smoothest over the normalized domain with respect to the total first-order variational energy functional of the expected step-size magnitude, and provide a template for optimizer step-size control and derivation of existing popular schedules
 
@@ -126,6 +125,11 @@ schedule =  endpt(case2_rcos(bvp_prof(r)))
 Similarly, this window shape is derived by adding Tikhonov regularization to the energy functional.
 
 *Remarks*: These novel windows additionally maximize the total expected step-size magnitude while remaining smooth over the normalized domain with respect to the total first-order variational energy functional of the expected step-size magnitude.
+
+<p align="center">
+<img src="figures/bvp_case2_plt.png" width="300"
+</p>
+
 
 ## Usage example
 
@@ -370,11 +374,11 @@ python case2_anim.py
 These scripts help visualize profile shape and overall schedule behavior.
 
 <p align="center">
-<img src="figures/bvp_case1_plt.png" width="300"
+<img src="figures/bvp_case1_plt_4.png" width="300"
 </p>
 
 <p align="center">
-<img src="figures/bvp_case2_plt.png" width="300"
+<img src="figures/bvp_case2_plt_6.png" width="300"
 </p>
 
 ## Related work and citation
