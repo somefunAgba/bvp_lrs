@@ -58,7 +58,7 @@ Two cases are provided based on variational energy minimization.
 
 ### Case 1
 
-*Goal*: Minimize the total first-order variational energy functional of the expected step-size magnitude subject to boundary value constraints.
+*Goal*: Minimize the total first-order variational energy functional of the expected step-size magnitude subject to at least, boundary value constraints `y(0)=1, y(1)=0`.
 
 <p align="center">
 <img src="figures/bvp_case1_plt.gif" width="300"
@@ -95,7 +95,7 @@ This is the regularized version derived by minimizing a Tikhonov regularized tot
 
 ### Case 2
 
-*Goal*: Maximize the Total expected step-size magnitude functional, while minimizing the Total first-order variational energy functional subject to boundary value constraints.
+*Goal*: Maximize the Total expected step-size magnitude functional, while minimizing the Total first-order variational energy functional subject to at least, boundary value constraints `y(0)=1, y(0.5)=1, y(1)=0`.
 
 <p align="center">
 <img src="figures/bvp_case2_plt.gif" width="300"
