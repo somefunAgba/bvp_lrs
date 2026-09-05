@@ -255,7 +255,7 @@ class BVP_LRS:
         MUST be called before optimizer.step()
         """
 
-        x = lrs.bvp_prof(t/self.tau, m=self.m, e=self.e)
+        x = lrs.bvp_prof(self.t/self.tau, m=self.m, e=self.e)
         schedule = lrs.endpt(self.scf(x, p=self.p), l=self.l)
         self.t += 1
 
