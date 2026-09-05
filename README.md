@@ -195,17 +195,21 @@ def step(self):
                 continue
 
             grad = p.grad
+            state = self.state[p]
+            
 
             # Second-moment estimate
-            group["smom"] = 0.999 * group["smom"] + 0.001 * (grad * grad)
-            denom = torch.sqrt(group["smom"]).add(group["eps"])
+            smom = state["smom"]
+            smom *= 0.999 
+            smom += 0.001 * grad * grad
+            rmsgrad = torch.sqrt(smom).add(group["eps"])
 
             # learning-rate 'lr_t'
-            # lr_t = mu_t / denom
+            # lr_t = mu_t / rmsgrad
 
             # update the model parameter 'p'
             # p -= lr_t * grad
-            p.addcdiv_(grad, denom, value=-mu_t)
+            p.addcdiv_(grad, rmsgrad, value=-mu_t)
 
 ...
 ```
