@@ -46,7 +46,7 @@ with two interpretable knobs:
 - m to specify a warmup fraction (rise-time)
 - e to specify a constant-hold (plateau) fraction
 
-This supports a transitions across warmup, overshoot, plateau and decay-like phases to enable multi-stage training behavior.
+This supports smooth transitions across warmup, overshoot, plateau and decay-like phases to enable multi-stage training behavior.
 
 ## Window functions
 
@@ -197,10 +197,11 @@ def step(self):
             denom = torch.sqrt(group["smom"]).add(group["eps"])
 
             # learning-rate 'lr_t'
-            lr_t = mu_t / denom
+            # lr_t = mu_t / denom
 
             # update the model parameter 'p'
-            p.add_( -lr_t * grad )
+            # p -= lr_t * grad
+            p.addcdiv_(grad, denom, value=-mu_t)
 
 ...
 ```
@@ -263,7 +264,7 @@ class BVP_LRS:
 ### Usage Examples
 
 ```python
-optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
+optimizer = torch.optim.RMSprop(model.parameters(), lr=1e-3)
 
 # 10% warmup, 0% hold, square-root linear decay to zero over 50 million iterations
 scheduler = BVP_LRS(
@@ -286,7 +287,7 @@ for batch in loader:
 ```
 
 ```python
-optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
+optimizer = torch.optim.RMSprop(model.parameters(), lr=1e-3)
 
 # 0% warmup, 20% hold, cosine annealing to 10% of initial step-size over 50 million iterations
 scheduler = BVP_LRS(
@@ -310,7 +311,7 @@ for batch in loader:
 ```
 
 ```python
-optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
+optimizer = torch.optim.RMSprop(model.parameters(), lr=1e-3)
 
 # 0% warmup, 0% hold, sum of raised-cosines decay to zero over 50 million iterations
 scheduler = BVP_LRS(
@@ -332,7 +333,7 @@ for batch in loader:
 ```
 
 ```python
-optimizer = torch.optim.RSMprop(model.parameters(), lr=1e-3)
+optimizer = torch.optim.RMSprop(model.parameters(), lr=1e-3)
 
 # 5% warmup, quad. polynomial decay to zero over 50 million iterations
 scheduler = BVP_LRS(
