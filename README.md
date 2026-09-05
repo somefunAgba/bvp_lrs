@@ -275,7 +275,7 @@ scheduler = BVP_LRS(
     optimizer,
     num_iterations=50000000,
     warmup=0.1,
-    p=2,
+    root=2,
 )
 
 for batch in loader:
