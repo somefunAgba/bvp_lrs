@@ -199,14 +199,13 @@ def step(self):
             
 
             # Second-moment estimate
-
             if len(state) == 0: state["smom"] = torch.zeros_like(p)
             smom = state["smom"]
             smom *= 0.999 
             smom += 0.001 * grad * grad
             rmsgrad = torch.sqrt(smom).add(group["eps"])
-
-            # learning-rate 'lr_t'
+            
+            # Learning-rate function 'lr_t'
             # lr_t = mu_t / rmsgrad
 
             # update the model parameter 'p'
