@@ -136,7 +136,7 @@ Similarly, this window shape is derived by adding Tikhonov regularization to the
 ```python
 import numpy as np
 
-from bvp_lrs_np import bvp_prof, case1_lin, case1_rcos
+from bvp_lrs_np import bvp_prof, case1_lin, case1_rcos, endpt
 
 # initial or max. step size
 mu = 1e-4
@@ -185,7 +185,7 @@ def step(self):
         x = lrs.bvp_prof(r_t, m=group["warmup"], e=group["hold"])
 
         # Window function
-        schedule = lrs.case1_lin(prof, p=group["root"])
+        schedule = lrs.case1_lin(x, p=group["root"])
 
         # Scheduled step-size
         mu_t = group["mu"] * lrs.endpt(schedule, l=group['decayto'])
@@ -231,8 +231,8 @@ class BVP_LRS:
     def __init__(
         self,
         optimizer: Optimizer,
-        window: str = "case1_lin",
         num_iterations: int,
+        window: str = "case1_lin",
         warmup: float = 0,
         hold: float = 0,
         decayto: float = 0,
