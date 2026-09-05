@@ -199,6 +199,8 @@ def step(self):
             
 
             # Second-moment estimate
+
+            if len(state) == 0: state["smom"] = torch.zeros_like(p)
             smom = state["smom"]
             smom *= 0.999 
             smom += 0.001 * grad * grad
